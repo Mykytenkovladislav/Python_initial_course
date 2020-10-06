@@ -1,17 +1,15 @@
-test_list = ['Sansa Stark', -1, 3]
+string: str = 'If I look back I am lost'
 
 
-def is_arguments_for_substr_correct(input_string, start_index, length):
-    if length < 0:
-        return False
-    elif start_index < 0:
-        return False
-    elif start_index > len(input_string)-1:
-        return False
+def count_char(string_come: str, char_rec: str):
+    counter: int = 0
+    match_count: int = 0
+    while counter < len(string_come):
+        temp_char: str = string_come[counter]
+        if temp_char == char_rec:
+            match_count += 1
+        counter += 1
+    return match_count
 
 
-    else:
-        return True
-
-
-print(is_arguments_for_substr_correct(test_list))
+print(count_char(string, 't'))
