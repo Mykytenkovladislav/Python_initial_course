@@ -7,5 +7,4 @@ def sum_of_inputs(*args):
     return total
 
 
-input_for_sum = sum_of_inputs(4, 5, 7, 12)
-print(input_for_sum)
+
