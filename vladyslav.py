@@ -1,50 +1,90 @@
-# 1) Написать функцию которая принимает в качестве аргумента принимает структуру данных:
-# словарь в котором
-# в качестве ключей, имена людей (str),
-# в качестве значений — множества (set).
-# В множествах находятся имена людей, которые соответствуют подпискам.
-# { ‘some_name’: (‘some name1’, ‘some name2’), }
-# В этой структуре по ключу мы получаем множество подписок человека.
-# Функция должна вернуть список кортежей,
-# в которых первый элемент — имя человека которому производиться рекомендация,
-# а второй — множество имен тех кого рекомендуют для подписки.
-# В рекомендацию стоит добавить имя если, этого имени еще нет в списке подписок,
-# при этом как минимум двое из людей на которых человек уже подписан, подписаны на этого человека с этим именем.
+import random
+import re
+import nltk
+from collections import Counter
+from nltk.stem import WordNetLemmatizer
 
-friends_list: dict = {  # Debug dict
-    "Антон": {"Олег", "Игорь", "Паша", "Филипп"},
-    "Георгий": {"Таня", "Настя", "Филипп", "Робокоп"},
-    "Настя": {"Тамара", "Игорь", "Антон", "Георгий"},
-    "Олег": {"Робокоп", "Робоцып", "Дарт Вейдер", "Антон", "Игорь", "Филипп", 'Антон'}
-}
+from nltk.corpus import stopwords
+
+# Необходимо подгрузить некоторые данные, такие как список служебных слов.
+nltk.download('stopwords')
+nltk.download('wordnet')
+# множество служебных слов
+stop_words: set = set(stopwords.words('english'))
+# специальный объект, который будет приводить слова к лемам
+lemmatizer = WordNetLemmatizer()
+
+# Воспользуемся встроенной функцией open
+dataset_file = open('SMSSpamCollection.txt', mode='r', encoding='utf-8')
+
+# 0 ---------------------------------------------------------------------------------------
+
+# метод объекта файла readlines - возвращает список строк
+dataset: list = dataset_file.readlines()
+# закрываем файловый дескриптор
+dataset_file.close()
+
+random.shuffle(dataset)  # перетасовываем наши данные
+
+# 1 ---------------------------------------------------------------------------------------
+spam_dataset: set = set()
+ham_dataset: set = set()
+
+for line in dataset:
+    temp = line[: 3]
+    if line.startswith('spam\t'):
+        line_for_append = line.replace('spam\t', '')
+        spam_dataset.add(line_for_append)
+    elif line.startswith('ham\t'):
+        line_for_append = line.replace('ham\t', '')
+        ham_dataset.add(line_for_append)
+# 2 ---------------------------------------------------------------------------------------
+
+spam_dataset_test: set = set(
+    random.sample(spam_dataset, int(len(spam_dataset) * 0.2))
+)
+spam_dataset_main: set = spam_dataset.difference(spam_dataset_test)
+
+ham_dataset_test: set = set(
+    random.sample(ham_dataset, int(len(ham_dataset) * 0.2))
+)
+ham_dataset_main: set = ham_dataset.difference(ham_dataset_test)
 
 
-def recommendation(friends_list_: dict) -> list:
-    second_dict = friends_list_.copy()  # Создаю второй dict через копи для проверки каждого с каждым
-    name_and_recommendations: list = []  # Имя и рекомендации для каждого пользователя
-    return_list: list = []  # list Для возвращения значения
-    good_recommendation: set = set()  # set для будущих рекомендаций
-    compared_account: str = list(friends_list)[-1]  # Получаю ключ последнего элемента в input_dict
-    comparable_set: set = friends_list.get(compared_account)  # Получаю значение через ключ с последнего значения
-    for keys_first_dict in friends_list_:  # Цикл для проверки совпадений по значению из input_dict
-        set_for_compare = friends_list_.get(keys_first_dict)  # значение для сравнения в первом цикле
-        for keys_second_dict in second_dict:
-            if comparable_set == second_dict.get(keys_second_dict):  # Проверка на тот же аккаунт
-                continue
-            compare_result = comparable_set & second_dict.get(keys_second_dict)  # Найти общих друзей
-            if len(compare_result) >= 2:  # Если их больше двух, то записать значение в set
-                if keys_second_dict in comparable_set:  # Проверка на уже наличие в друзьях TODO добавлено
-                    continue
-                good_recommendation.add(keys_second_dict)
-        good_recommendation = good_recommendation - set_for_compare
-        if good_recommendation != set():  # проверка на пустой сет, что бы не отображать их TODO добавлено
-            name_and_recommendations.append(compared_account)  # добавляю в list имя чел. кому производится рекомендация
-            name_and_recommendations.append(good_recommendation)  # множество имен тех кого рекомендуют для подписки
-            return_list.append(tuple(name_and_recommendations))  # добавления списка tuple
-            good_recommendation = set()  # Очистка set для последущих проверок
-        name_and_recommendations = []  # Очистка list для последущих проверок
-        comparable_set = set_for_compare  # переназначение set для сравнения
-        compared_account = keys_first_dict  # назначение следующего аккаунта для сравнения
-    return return_list
+# 3 ---------------------------------------------------------------------------------------
 
-print(recommendation(friends_list))
+def processing_dataset(dataset: set) -> dict:
+    word_dataset = []
+    for line in dataset:
+        line = re.sub(r'[A-Za-z ]', '', line)  # Оставляет пробелы и все буквы, остальное удаляет
+        line.lower()
+        line_words: list = line.split()
+        line_words = list(
+            [lemmatizer.lemmatize(word) for word in line_words if word not in stop_words]
+        )  # высчитываем лему
+        word_dataset += line_words
+
+    word_counter = Counter(word_dataset)
+
+    # теперь можем узнать частоту встречаемости разных слов
+    len_word_dataset = len(word_dataset)
+    result_dict = {}
+    for key, count in word_counter.items():
+        result_dict[key] = count / len_word_dataset
+    return result_dict
+
+
+print(f'count of spam sms for analysis:  {len(spam_dataset_test)}')
+print(f'count of ham sms for analysis:  {len(ham_dataset_test)}')
+
+ham_words = processing_dataset(ham_dataset_main)
+spam_words = processing_dataset(spam_dataset_main)
+
+# 4 ---------------------------------------------------------------------------------------
+
+learning_result: dict = {}
+learning_result_keys: list = list(spam_words.keys()) + list(ham_words.keys())
+
+for key in learning_result_keys:
+    in_spam_word = spam_words.get(key, 0) > ham_words.get(key, 0)
+    in_ham_word = spam_words.get(key, 0) > ham_words.get(key, 0)
