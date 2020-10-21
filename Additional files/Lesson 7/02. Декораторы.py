@@ -26,9 +26,6 @@ def some_f(x: int, y: int):
     return x ** y
 
 
-
-
-
 def fetch_webpage1(*args, **kwargs):
     import requests
     webpage = requests.get('https://google.com')
@@ -45,9 +42,6 @@ def fetch_webpage2():
 
 
 fetch_webpage2()
-
-
-
 
 
 # декораторы с аргументами - Это настоящие фабрики декораторов.

@@ -51,6 +51,9 @@ def recommendation(friends_list_: dict) -> list:
 print(recommendation(friends_list))
 
 
+print(recommendation(friends_list))
+
+
 # 2.0 Создать функцию которая принимает неизвестное количество позиционных аргументов, но больше одного.
 # В качестве аргументов ожидайте int. Функция должна вернуть сумму этих аргументов
 def sum_of_inputs(*args) -> int:
@@ -88,11 +91,11 @@ input_dict: dict = {  # Для дебага
         12: None,
     }
 }
-max_into_func = 0  # Для максимального значения TODO Подскажи, как сделать, что бы значения меньше 0 тоже считались?
 
 
 # тут мало чего можно комментировать
-def recursive_func(received_dict: dict, maximum: int):
+def recursive_func(received_dict: dict):
+    maximum = received_dict[1]
     for key, value in received_dict.items():
         if key > maximum:
             maximum = key
@@ -101,4 +104,4 @@ def recursive_func(received_dict: dict, maximum: int):
     return maximum
 
 
-print(recursive_func(input_dict, max_into_func))
+print(recursive_func(input_dict))
