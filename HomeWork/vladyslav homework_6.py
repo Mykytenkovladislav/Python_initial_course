@@ -14,10 +14,12 @@ def search_and_comparing(func):  # decorator
     def wrapper(*args, **kwargs):
         if args in cache_dict:
             print(f'Value already in  cache and it\'s = {cache_dict.get(args)}')  # debug
+            return cache_dict.get(args)
         else:
             result = func(*args)
             cache_dict[args] = result
             print(f'Value added into cache and it\'s = {result}')  # debug
+            return result
 
     return wrapper
 
@@ -40,6 +42,6 @@ def main_func(*args):
     return multiplication_of_factorials
 
 
-main_func(2, 3)
-main_func(6, 7)
-main_func(2, 3)
+print(main_func(2, 3))
+print(main_func(6, 7))
+print(main_func(2, 3))
