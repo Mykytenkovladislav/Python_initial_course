@@ -1,4 +1,5 @@
 import math
+import time
 
 month_dict = {
     1: 'Winter',
@@ -69,13 +70,12 @@ print(palindrome_check(PALINDROME))
 NOT_PALINDROME = 'deiabgied'
 print(palindrome_check(NOT_PALINDROME))
 
-# decorator task
+# task 5 decorator task
 PALINDROME = 'deified'
 NOT_PALINDROME = 'deiabgied'
 
 
 def executing_time(func):
-    import time
 
     def wrapper(*args, **kwargs):
         start = time.time()
@@ -90,7 +90,8 @@ def executing_time(func):
 @executing_time
 def palindrome_check(user_input: str) -> bool:
     temp = list(user_input)
-    while len(temp) > 0:
+    time.sleep(2.4)
+    while len(temp) >= 0:
         if len(temp) == 0 or len(temp) == 1:
             return True
         if temp[0] == temp[-1]:
