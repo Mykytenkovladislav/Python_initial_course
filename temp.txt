@@ -1,0 +1,2 @@
+C:\Users\Student_3-5\PycharmProjects\Mykytenko_app\Python_initial_course\temp.txt
+C:\Users\Student_3-5\PycharmProjects\Mykytenko_app\Python_initial_course\Additional files\Lesson 13\file.txt

@@ -1,4 +1,3 @@
-# Task 1
 def some(upper_border):
     current_i = 0
     test_list = list(range(upper_border))
@@ -10,11 +9,9 @@ def some(upper_border):
             current_i += 1
 
 
-# Task 2
 for generator in some(30):
     print(generator)
 
-# Task 3
 a = some(30)
 b = a.__iter__()
 
@@ -25,7 +22,7 @@ while True:
         break
 
 
-# Task 4 zip but as func
+# task: zip but as func
 
 def zip_func(*args):
     iterators: iter = [iter(it) for it in args]
@@ -47,5 +44,5 @@ c = [1, 2, 3]
 for item in (zip_func(a, b, c)):
     print(item)
 
-
-
+for iter_value in zip_func(a, b, c):
+    print(iter_value)
