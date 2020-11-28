@@ -32,7 +32,7 @@ def rewrite_value(x_coordinate: int, y_coordinate: int, value_for_block: str):
     if x_coordinate == 0:
         first_column.reverse()  # Для правильного выбора по координате Y, оставлю этот коммент только один раз, т.к.
         while True:  # дальше смысл один и тот же. P.S Если надо повторно написать везде, дай знать
-            if first_column[y_coordinate] != '   ':  # TODO уточнить у Егора при "" в знач можно bool=False?
+            if first_column[y_coordinate] != '   ':
                 change_or_not: str = input('Ячейка занята! Перезаписать? \n1) Да.\n2) НЕТ!')
                 if change_or_not == "Да.":
                     first_column[y_coordinate] = f' {value_for_block} '
@@ -122,7 +122,7 @@ def rewrite_value(x_coordinate: int, y_coordinate: int, value_for_block: str):
 def check_for_value(x_coordinate: int, y_coordinate: int):
     if x_coordinate == 0:
         first_column.reverse()
-        if first_column[y_coordinate] != '   ':  # TODO уточнить у Егора при "" в знач можно bool=False?
+        if first_column[y_coordinate] != '   ':
             print(first_column[y_coordinate])
             first_column.reverse()
             return
@@ -131,7 +131,7 @@ def check_for_value(x_coordinate: int, y_coordinate: int):
             first_column.reverse()
     elif x_coordinate == 1:
         second_column.reverse()
-        if second_column[y_coordinate] != '   ':  # TODO уточнить у Егора при "" в знач можно bool=False?
+        if second_column[y_coordinate] != '   ':
             print(second_column[y_coordinate])
             second_column.reverse()
             return
@@ -140,7 +140,7 @@ def check_for_value(x_coordinate: int, y_coordinate: int):
             second_column.reverse()
     elif x_coordinate == 2:
         third_column.reverse()
-        if third_column[y_coordinate] != '   ':  # TODO уточнить у Егора при "" в знач можно bool=False?
+        if third_column[y_coordinate] != '   ':
             print(third_column[y_coordinate])
             third_column.reverse()
             return
@@ -149,7 +149,7 @@ def check_for_value(x_coordinate: int, y_coordinate: int):
             third_column.reverse()
     elif x_coordinate == 3:
         fourth_column.reverse()
-        if fourth_column[y_coordinate] != '   ':  # TODO уточнить у Егора при "" в знач можно bool=False?
+        if fourth_column[y_coordinate] != '   ':
             print(fourth_column[y_coordinate])
             fourth_column.reverse()
             return
@@ -158,7 +158,7 @@ def check_for_value(x_coordinate: int, y_coordinate: int):
             fourth_column.reverse()
     elif x_coordinate == 3:
         fifth_column.reverse()
-        if fifth_column[y_coordinate] != '   ':  # TODO уточнить у Егора при "" в знач можно bool=False?
+        if fifth_column[y_coordinate] != '   ':
             print(fifth_column[y_coordinate])
             fifth_column.reverse()
             return
@@ -238,6 +238,6 @@ while True:
         user_selected = main_menu()
     elif user_selected == 0:  # 4 --> Выход с программы
         break
-else:
-    print(f'Неверное значение, пожалуйста повторите ввод')
-    user_selected = main_menu()
+    else:
+        print(f'Неверное значение, пожалуйста повторите ввод')
+        user_selected = main_menu()

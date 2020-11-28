@@ -1,12 +1,19 @@
-class Car:
-    def __new__(cls):
-        obj = super(Car, cls).__new__(cls)
-        if not hasattr(cls, 'car_count'):
-            cls.car_count = []
-        cls.car_count.append(obj.__name__)
-        return obj
+def zip_func(*args):
+    iterators: iter = [iter(it) for it in args]
+    empty_object = object()
+    while iterators:
+        result: list = []
+        for it in iterators:
+            elem = next(it, empty_object)
+            if elem is empty_object:
+                return
+            result.append(elem)
+        yield tuple(result)
 
 
-car_a = Car()
-car_b = Car()
-print(Car.car_count)
+a = [1, 2, 3]
+b = [1, 2, 3]
+c = [1, 2, 3]
+
+for item in (zip_func(a, b, c)):
+    print(item)
